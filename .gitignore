@@ -1,0 +1,6 @@
+*secret*
+**/charts
+!**/templates/*secret*
+!charts/**/templates/*secret*
+.DS_Store
+!/charts

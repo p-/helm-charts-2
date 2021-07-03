@@ -1,0 +1,186 @@
+# Default values for generic.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ""
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+env: {}
+  # PORT: "80"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+# podSecurityContext: {}
+  # fsGroup: 2000
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+# securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+securityContext:
+  capabilities:
+    drop:
+      - SETPCAP
+      - MKNOD
+      - AUDIT_WRITE
+      - CHOWN
+      - NET_RAW
+      - DAC_OVERRIDE
+      - FOWNER
+      - FSETID
+      - KILL
+      - SETGID
+      - SETUID
+      - NET_BIND_SERVICE
+      - SYS_CHROOT
+      - SETFCAP
+  readOnlyRootFilesystem: true
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+  protocol: TCP
+  additionalPorts: []
+  # - name: PORT_NAME
+  #   port: 123
+  #   protocol: TCP
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts: []
+    # - example.com
+  paths:
+    - /
+  extraPaths: []
+    # - path: /*
+    #   backend:
+    #     serviceName: ssl-redirect
+    #     servicePort: use-annotation
+
+  tls: []
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: beta.kubernetes.io/arch
+          operator: In
+          values:
+          - amd64
+
+livenessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+
+readinessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 0
+  timeoutSeconds: 1
+  periodSeconds: 10
+
+containerPort: 80
+enableTTY: false
+
+metrics:
+  port: 9913
+  enabled: false
+
+  service:
+    annotations: {}
+    # prometheus.io/scrape: "true"
+    # prometheus.io/port: "10254"
+
+    # clusterIP: ""
+
+    ## List of IP addresses at which the stats-exporter service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    # loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 9913
+    type: ClusterIP
+    # externalTrafficPolicy: ""
+    # nodePort: ""
+
+  serviceMonitor:
+    enabled: false
+    additionalLabels: {}
+    namespace: ""
+    namespaceSelector: {}
+    # Default: scrape .Release.Namespace only
+    # To scrape all, use the following:
+    # namespaceSelector:
+    #   any: true
+    scrapeInterval: 30s
+    # honorLabels: true
+    targetLabels: []
+    metricRelabelings: []
+
+    additionalEndpointOptions: {}
+      # params:
+      #   url_param_1: [ 'value' ]
+      #   url_param_2: [ 'value' ]

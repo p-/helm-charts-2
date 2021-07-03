@@ -1,0 +1,36 @@
+{{- if .Values.coturn.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "matrix.fullname" . }}-coturn-config
+  labels:
+{{ include "matrix.labels" . | nindent 4}}
+{{ include "matrix.coturn.labels" . | indent 4}}
+data:
+  turnserver.conf: |
+    lt-cred-mech
+    use-auth-secret
+    static-auth-secret={{ include "matrix.coturn.sharedSecret" . }}
+    realm={{ .Values.matrix.serverName }}
+
+    cert=/certs/tls.crt
+    pkey=/certs/tls.key
+
+    min-port={{ .Values.coturn.ports.from }}
+    max-port={{ .Values.coturn.ports.to }}
+
+    log-file=stdout
+    pidfile=/var/tmp/turnserver.pid
+    userdb=/var/tmp/turnserver.db
+
+    no-udp
+    external-ip={{ .Values.coturn.externalIP }}
+
+  # no-cli
+
+  # no-tls
+  # no-dtls
+
+  # prod
+  # no-tcp-relay
+{{- end }}

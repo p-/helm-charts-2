@@ -1,0 +1,44 @@
+{{- if and .Values.synapse.metrics.enabled .Values.synapse.metrics.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "matrix.fullname" . }}
+{{- if .Values.synapse.metrics.serviceMonitor.namespace }}
+  namespace: {{ .Values.synapse.metrics.serviceMonitor.namespace | quote }}
+{{- end }}
+  labels:
+    {{- include "matrix.synapse.labels" . | nindent 4 }}
+  {{- if .Values.synapse.metrics.serviceMonitor.additionalLabels }}
+    {{- toYaml .Values.synapse.metrics.serviceMonitor.additionalLabels | nindent 4 }}
+  {{- end }}
+spec:
+  endpoints:
+    - port: metrics
+      interval: {{ .Values.synapse.metrics.serviceMonitor.scrapeInterval }}
+    {{- if .Values.synapse.metrics.serviceMonitor.honorLabels }}
+      honorLabels: true
+    {{- end }}
+    {{- if .Values.synapse.metrics.serviceMonitor.metricRelabelings }}
+      metricRelabelings: {{ toYaml .Values.synapse.metrics.serviceMonitor.metricRelabelings | nindent 8 }}
+    {{- end }}
+    {{- if .Values.synapse.metrics.serviceMonitor.additionalEndpointOptions }}
+      {{- toYaml .Values.synapse.metrics.serviceMonitor.additionalEndpointOptions | nindent 6 }}
+    {{- end }}
+{{- if .Values.synapse.metrics.serviceMonitor.namespaceSelector }}
+  namespaceSelector: {{ toYaml .Values.synapse.metrics.serviceMonitor.namespaceSelector | nindent 4 }}
+{{ else }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.synapse.metrics.serviceMonitor.targetLabels }}
+  targetLabels:
+  {{- range .Values.synapse.metrics.serviceMonitor.targetLabels }}
+    - {{ . }}
+  {{- end }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "matrix.labels" . | nindent 6 }}
+      {{- include "matrix.synapse.labels" . | nindent 6 }}
+{{- end }}

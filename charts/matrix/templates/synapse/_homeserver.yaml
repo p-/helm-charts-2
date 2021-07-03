@@ -1,0 +1,504 @@
+{{- define "homeserver.yaml" }}
+{{- if .Values.matrix.homeserverOverride }}
+{{- toYaml .Values.matrix.homeserverOverride }}
+{{- else }}
+server_name: {{ .Values.matrix.serverName }}
+pid_file: /data/homeserver.pid
+web_client_location: {{.Values.ingress.hosts.riot}}
+public_baseurl: {{ include "matrix.baseUrl" . | quote }}
+use_presence: {{ .Values.matrix.presence }}
+#require_auth_for_profile_requests: true
+#limit_profile_requests_to_users_who_share_rooms: true
+#allow_public_rooms_without_auth: true
+allow_public_rooms_over_federation: {{ and .Values.matrix.federation.enabled .Values.matrix.federation.allowPublicRooms }}
+#default_room_version: "5"
+#gc_thresholds: [700, 10, 10]
+#filter_timeline_limit: 5000
+block_non_admin_invites: {{ .Values.matrix.blockNonAdminInvites }}
+enable_search: {{ .Values.matrix.search }}
+{{- if .Values.matrix.federation.whitelist }}
+federation_domain_whitelist:
+    {{- range .Values.matrix.federation.whitelist }}
+    - {{ . }}
+    {{- end }}
+{{- end}}
+federation_ip_range_blacklist:
+{{- range .Values.matrix.federation.blacklist }}
+    - {{ . }}
+{{- end }}
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    bind_addresses: ['0.0.0.0']
+    resources:
+      - names: [client, federation]
+        compress: false
+{{- if .Values.synapse.metrics.enabled }}
+  - type: metrics
+    port: {{ .Values.synapse.metrics.port }}
+    bind_addresses: ['0.0.0.0']
+    resources:
+      - names: [metrics]
+{{- end }}
+admin_contact: 'mailto:{{ .Values.matrix.adminEmail }}'
+hs_disabled: {{ .Values.matrix.disabled }}
+hs_disabled_message: {{ .Values.matrix.disabledMessage }}
+#limit_usage_by_mau: false
+#max_mau_value: 50
+#mau_trial_days: 2
+#mau_limit_alerting: false
+#mau_stats_only: false
+#mau_limit_reserved_threepids:
+#server_context: context
+limit_remote_rooms:
+  #enabled: true
+  #complexity: 0.5
+  #complexity_error: "This room is too complex."
+#require_membership_for_aliases: false
+#allow_per_room_profiles: false
+redaction_retention_period: {{ .Values.matrix.retentionPeriod }}
+#user_ips_max_age: 14d
+retention:
+  #enabled: true
+  #default_policy:
+  #  min_lifetime: 1d
+  #  max_lifetime: 1y
+  #allowed_lifetime_min: 1d
+  #allowed_lifetime_max: 1y
+  #purge_jobs:
+  #  - shortest_max_lifetime: 1d
+  #    longest_max_lifetime: 3d
+  #    interval: 12h
+  #  - shortest_max_lifetime: 3d
+  #    longest_max_lifetime: 1y
+  #    interval: 1d
+#request_token_inhibit_3pid_errors: true
+acme:
+    enabled: false
+database:
+    name: "psycopg2"
+    args:
+        user: "{{ .Values.postgresql.username }}"
+        password: "{{ .Values.postgresql.password }}"
+        database: "{{ .Values.postgresql.database }}"        
+        {{- if .Values.postgresql.enabled }}
+        host: "{{ include "matrix.fullname" . }}-postgresql"
+        port: "5432"
+        {{- else }}
+        host: "{{ .Values.postgresql.hostname }}"
+        port: "{{ .Values.postgresql.port }}"
+        {{- end }}
+        sslmode: {{ .Values.postgresql.sslMode }}
+        cp_min: 5
+        cp_max: 10
+#event_cache_size: 10K
+log_config: "/data/{{ .Values.matrix.serverName }}.log.config"
+#rc_message:
+#  per_second: 0.2
+#  burst_count: 10
+#rc_registration:
+#  per_second: 0.17
+#  burst_count: 3
+#rc_login:
+#  address:
+#    per_second: 0.17
+#    burst_count: 3
+#  account:
+#    per_second: 0.17
+#    burst_count: 3
+#  failed_attempts:
+#    per_second: 0.17
+#    burst_count: 3
+#rc_admin_redaction:
+#  per_second: 1
+#  burst_count: 50
+#rc_federation:
+#  window_size: 1000
+#  sleep_limit: 10
+#  sleep_delay: 500
+#  reject_limit: 50
+#  concurrent: 3
+#federation_rr_transactions_per_room_per_second: 50
+#enable_media_repo: false
+media_store_path: "/data/media_store"
+#media_storage_providers:
+#  - module: file_system
+#    # Whether to write new local files.
+#    store_local: false
+#    # Whether to write new remote media
+#    store_remote: false
+#    # Whether to block upload requests waiting for write to this
+#    # provider to complete
+#    store_synchronous: false
+#    config:
+#       directory: /mnt/some/other/directory
+uploads_path: "/data/uploads"
+max_upload_size: {{ .Values.matrix.uploads.maxSize }}
+max_image_pixels: {{ .Values.matrix.uploads.maxPixels }}
+#dynamic_thumbnails: false
+#thumbnail_sizes:
+#  - width: 32
+#    height: 32
+#    method: crop
+#  - width: 96
+#    height: 96
+#    method: crop
+#  - width: 320
+#    height: 240
+#    method: scale
+#  - width: 640
+#    height: 480
+#    method: scale
+#  - width: 800
+#    height: 600
+#    method: scale
+url_preview_enabled: {{ .Values.matrix.urlPreviews.enabled }}
+{{- if .Values.matrix.urlPreviews.rules.ip.blacklist }}
+url_preview_ip_range_blacklist:
+    {{- range .Values.matrix.urlPreviews.rules.ip.blacklist }}
+    - {{ . }}
+    {{- end }}
+{{- end }}
+{{- if .Values.matrix.urlPreviews.rules.ip.whitelist }}
+url_preview_ip_range_whitelist:
+    {{- range .Values.matrix.urlPreviews.rules.ip.whitelist}}
+    - {{ . }}
+    {{- end }}
+{{- end }}
+{{- if .Values.matrix.urlPreviews.rules.url.blacklist }}
+url_preview_url_blacklist:
+{{ include .Values.matrix.urlPreviews.rules.url.blacklist . | nindent 2 }}
+{{- end }}
+
+# The largest allowed URL preview spidering size in bytes
+
+max_spider_size: {{ .Values.matrix.urlPreviews.rules.maxSize }}
+#recaptcha_public_key: "YOUR_PUBLIC_KEY"
+#recaptcha_private_key: "YOUR_PRIVATE_KEY"
+#captcha_bypass_secret: "YOUR_SECRET_HERE"
+#recaptcha_siteverify_api: "https://www.recaptcha.net/recaptcha/api/siteverify"
+{{- if .Values.coturn.enabled -}}
+{{- if not (empty .Values.coturn.uris) }}
+turn_uris:
+    {{- range .Values.coturn.uris }}
+    - {{ . }}
+    {{- end }}
+{{- else }}
+turn_uris:
+  - "turn:{{ include "matrix.hostname" . }}?transport=udp"
+{{- end }}
+turn_shared_secret: {{ include "matrix.coturn.sharedSecret" . }}
+turn_user_lifetime: 1h
+turn_allow_guests: {{ .Values.coturn.allowGuests }}
+{{- end }}
+enable_registration: {{ .Values.matrix.registration.enabled }}
+#account_validity:
+#  enabled: true
+#  period: 6w
+#  renew_at: 1w
+#  renew_email_subject: "Renew your %(app)s account"
+#  template_dir: "res/templates"
+#  account_renewed_html_path: "account_renewed.html"
+#  invalid_token_html_path: "invalid_token.html"
+#session_lifetime: 24h
+{{- if .Values.matrix.registration.required3Pids }}
+registrations_require_3pid:
+    {{- range .Values.matrix.registration.required3Pids }}
+    - {{ . }}
+    {{- end }}
+{{- end }}
+#disable_msisdn_registration: true
+#allowed_local_3pids:
+#  - medium: email
+#    pattern: '.*@matrix\.org'
+#  - medium: email
+#    pattern: '.*@vector\.im'
+#  - medium: msisdn
+#    pattern: '\+44'
+#enable_3pid_lookup: true
+{{- if .Values.matrix.registration.sharedSecret }}
+registration_shared_secret: {{ .Values.matrix.registration.sharedSecret }}
+{{- end }}
+#bcrypt_rounds: 12
+allow_guest_access: {{ .Values.matrix.registration.allowGuests }}
+#default_identity_server: https://matrix.org
+#trusted_third_party_id_servers:
+#  - matrix.org
+#  - vector.im
+#account_threepid_delegates:
+#email: https://example.com     # Delegate email sending to example.com
+#msisdn: http://localhost:8090  # Delegate SMS sending to this local process
+#enable_set_displayname: false
+#enable_set_avatar_url: false
+#enable_3pid_changes: true
+{{- if not (empty .Values.matrix.autoJoinRooms) }}
+auto_join_rooms:
+    {{- range .Values.matrix.autoJoinRooms }}
+    - {{ . }}
+    {{- end }}
+{{- end }}
+#autocreate_auto_join_rooms: false
+#autocreate_auto_join_rooms_federated: false
+#autocreate_auto_join_room_preset: private_chat
+#auto_join_mxid_localpart: system
+#auto_join_rooms_for_guests: false
+{{- if .Values.synapse.metrics.enabled }}
+enable_metrics: true
+{{- end }}
+#sentry:
+#    dsn: "..."
+metrics_flags:
+    #known_servers: true
+report_stats: {{ .Values.matrix.telemetry }}
+#report_stats_endpoint: https://example.com/report-usage-stats/push
+#room_invite_state_types:
+#  - "m.room.join_rules"
+#  - "m.room.canonical_alias"
+#  - "m.room.avatar"
+#  - "m.room.encryption"
+#  - "m.room.name"
+{{- if or .Values.bridges.whatsapp.enabled .Values.bridges.discord.enabled .Values.bridges.irc.enabled }}
+app_service_config_files:
+{{- end }}
+{{- if .Values.bridges.whatsapp.enabled }}
+  - "/bridges/whatsapp.yaml"
+{{- end }}
+{{- if .Values.bridges.discord.enabled }}
+  - "/bridges/discord.yaml"
+{{- end }}
+{{- if .Values.bridges.irc.enabled }}
+  - "/bridges/irc.yaml"
+{{- end }}
+#track_appservice_user_ips: true
+{{- if .Values.matrix.security.macaroonSecretKey }}
+macaroon_secret_key: {{ .Values.matrix.security.macaroonSecretKey }}
+{{- end }}
+# form_secret: <PRIVATE STRING>
+signing_key_path: "/data/keys/{{ .Values.matrix.serverName }}.signing.key"
+#old_signing_keys:
+#  "ed25519:auto":
+#    key: "The public part of your old signing key."
+#    expired_ts: 123456789123
+#key_refresh_interval: 1d
+{{- if .Values.matrix.security.trustedKeyServers }}
+trusted_key_servers:
+    {{- range .Values.matrix.security.trustedKeyServers }}
+    - server_name: {{ .serverName }}
+      {{- if .verifyKeys }}
+      verify_keys:
+        {{- range .verifyKeys }}
+          {{ .id | quote }}: {{ .key | quote }}
+        {{- end }}
+      {{- end }}
+      {{- if .acceptKeysInsecurely }}
+      accept_keys_insecurely: {{ .acceptKeysInsecurely }}
+      {{- end }}
+    {{- end }}
+{{- end }}
+suppress_key_server_warning: {{ .Values.matrix.security.suppressKeyServerWarning }}
+#key_server_signing_keys_path: "key_server_signing_keys.key"
+saml2_config:
+  #sp_config:
+  #  metadata:
+  #    #local: ["saml2/idp.xml"]
+  #    remote:
+  #      - url: https://our_idp/metadata.xml
+  #  #service:
+  #  #  sp:
+  #  #    allow_unsolicited: true
+  #  description: ["My awesome SP", "en"]
+  #  name: ["Test SP", "en"]
+  #  organization:
+  #    name: Example com
+  #    display_name:
+  #      - ["Example co", "en"]
+  #    url: "http://example.com"
+  #  contact_person:
+  #    - given_name: Bob
+  #      sur_name: "the Sysadmin"
+  #      email_address": ["admin@example.com"]
+  #      contact_type": technical
+  #config_path: "CONFDIR/sp_conf.py"
+  #saml_session_lifetime: 5m
+  user_mapping_provider:
+    #module: mapping_provider.SamlMappingProvider
+    config:
+      #mxid_source_attribute: displayName
+      #mxid_mapping: dotreplace
+  #grandfathered_mxid_source_attribute: upn
+  #template_dir: "res/templates"
+# oidc_config:
+#   #enabled: true
+#   #discover: false
+#   #issuer: "https://accounts.example.com/"
+#   #client_id: "provided-by-your-issuer"
+#   #client_secret: "provided-by-your-issuer"
+#   #client_auth_method: client_secret_post
+#   #scopes: ["openid", "profile"]
+#   #authorization_endpoint: "https://accounts.example.com/oauth2/auth"
+#   #token_endpoint: "https://accounts.example.com/oauth2/token"
+#   #userinfo_endpoint: "https://accounts.example.com/userinfo"
+#   #jwks_uri: "https://accounts.example.com/.well-known/jwks.json"
+#   #skip_verification: true
+#   user_mapping_provider:
+#     #module: mapping_provider.OidcMappingProvider
+#     config:
+#       #subject_claim: "sub"
+# {{/*      localpart_template: "{{ user.preferred_username }}"*/}}
+# {{/*      #display_name_template: "{{ user.given_name }} {{ user.last_name }}"*/}}
+#cas_config:
+#   enabled: true
+#   server_url: "https://cas-server.com"
+#   service_url: "https://homeserver.domain.com:8448"
+#   #displayname_attribute: name
+#   #required_attributes:
+#   #    name: value
+sso:
+    #client_whitelist:
+    #  - https://riot.im/develop
+    #  - https://my.custom.client/
+    #template_dir: "res/templates"
+#jwt_config:
+    #enabled: true
+    #secret: "provided-by-your-issuer"
+    #algorithm: "provided-by-your-issuer"
+    #issuer: "provided-by-your-issuer"
+    #audiences:
+    #    - "provided-by-your-issuer"
+password_config:
+   #enabled: false
+   #localdb_enabled: false
+   #pepper: "EVEN_MORE_SECRET"
+   policy:
+      #enabled: true
+      #minimum_length: 15
+      #require_digit: true
+      #require_symbol: true
+      #require_lowercase: true
+      #require_uppercase: true
+email:
+  enable_notifs: {{ .Values.mail.enabled }}
+  notif_from: {{ .Values.mail.from }}
+  {{- if .Values.mail.relay.enabled }}
+  smtp_host: {{ include "matrix.fullname" . }}-exim-relay
+  smtp_port: {{ .Values.mail.relay.service.port }}
+  {{- else }}
+  smtp_host: {{ .Values.mail.external.host }}
+  smtp_port: {{ .Values.mail.external.port }}
+  smtp_user: {{ .Values.mail.external.username }}
+  smtp_pass: {{ .Values.mail.external.password }}
+  require_transport_security: {{ .Values.mail.external.requireTransportSecurity }}
+  {{- end }}
+  notif_from: {{ .Values.mail.from }}
+  #enable_notifs: true
+  #notif_for_new_users: false
+  {{- if .Values.mail.riotUrl }}
+  client_base_url: {{ .Values.mail.riotUrl }}
+  {{- else if .Values.ingress.enabled }}
+  client_base_url: {{ .Values.ingress.hosts.riot }}
+  {{- end }}
+  #validation_token_lifetime: 15m
+  #template_dir: "res/templates"
+  #subjects:
+    # placeholders:
+    #
+    #   * '%(person)s', which will be replaced by the display name of the user(s)
+    #      that sent the message(s), e.g. "Alice and Bob".
+    #   * '%(room)s', which will be replaced by the name of the room the
+    #      message(s) have been sent to, e.g. "My super room".
+    #message_from_person_in_room: "[%(app)s] You have a message on %(app)s from %(person)s in the %(room)s room..."
+    #message_from_person: "[%(app)s] You have a message on %(app)s from %(person)s..."
+    #messages_from_person: "[%(app)s] You have messages on %(app)s from %(person)s..."
+    #messages_in_room: "[%(app)s] You have messages on %(app)s in the %(room)s room..."
+    #messages_in_room_and_others: "[%(app)s] You have messages on %(app)s in the %(room)s room and others..."
+    #messages_from_person_and_others: "[%(app)s] You have messages on %(app)s from %(person)s and others..."
+    #invite_from_person: "[%(app)s] %(person)s has invited you to chat on %(app)s..."
+    #password_reset: "[%(server_name)s] Password reset"
+    #email_validation: "[%(server_name)s] Validate your email"
+password_providers:
+  {{- if .Values.ldap.enabled }}
+  - module: "ldap_auth_provider.LdapAuthProvider"
+    config:
+      enabled: true
+      uri: {{ .Values.ldap.url }}
+      start_tls: {{ .Values.ldap.tls }}
+      base: {{ .Values.ldap.base }}
+      attributes:
+        uid: "cn"
+        mail: "mail"
+        name: "givenName"
+      bind_dn: {{ .Values.ldap.bindDn }}
+      bind_password: {{ .Values.ldap.bindPassword }}
+      filter: "{{ .Values.ldap.filter }}"
+  {{- end }}
+#push:
+#  include_content: true
+spam_checker:
+   #- module: "my_custom_project.SuperSpamChecker"
+   #  config:
+   #    example_option: 'things'
+   #- module: "some_other_project.BadEventStopper"
+   #  config:
+   #    example_stop_events_from: ['@bad:example.com']
+encryption_enabled_by_default_for_room_type: {{ .Values.matrix.encryptByDefault }}
+#enable_group_creation: true
+#group_creation_prefix: "unofficial/"
+#user_directory:
+#  enabled: true
+#  search_all_users: false
+#user_consent:
+#  template_dir: res/templates/privacy
+#  version: 1.0
+#  server_notice_content:
+#    msgtype: m.text
+#    body: >-
+#      To continue using this homeserver you must review and agree to the
+#      terms and conditions at %(consent_uri)s
+#  send_server_notice_to_guests: true
+#  block_events_error: >-
+#    To continue using this homeserver you must review and agree to the
+#    terms and conditions at %(consent_uri)s
+#  require_at_registration: false
+#  policy_name: Privacy Policy
+#stats:
+#   enabled: true
+#   bucket_size: 1d
+#   retention: 1y
+#server_notices:
+#  system_mxid_localpart: notices
+#  system_mxid_display_name: "Server Notices"
+#  system_mxid_avatar_url: "mxc://server.com/oumMVlgDnLYFaPVkExemNVVZ"
+#  room_name: "Server Notices"
+#enable_room_list_search: false
+#alias_creation_rules:
+#  - user_id: "*"
+#    alias: "*"
+#    room_id: "*"
+#    action: allow
+#room_list_publication_rules:
+#  - user_id: "*"
+#    alias: "*"
+#    room_id: "*"
+#    action: allow
+#third_party_event_rules:
+#  module: "my_custom_project.SuperRulesSet"
+#  config:
+#    example_option: 'things'
+opentracing:
+    #enabled: true
+    #homeserver_whitelist:
+    #  - ".*"
+    #jaeger_config:
+    #  sampler:
+    #    type: const
+    #    param: 1
+    #  logging:
+    #    false
+
+{{ if .Values.matrix.homeserverExtra }}
+{{- toYaml .Values.matrix.homeserverExtra }}
+{{- end }}
+{{- end }}
+{{- end }}
