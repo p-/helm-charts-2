@@ -18,6 +18,8 @@ if [[ ! -d "$cache_dir" ]]; then
   export PATH="$cache_dir:$PATH"
 fi
 
+git fetch
+git remote
 git checkout "$CR_PAGES_BRANCH"
 
 cr index
