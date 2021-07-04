@@ -1,0 +1,57 @@
+name: Release a new version
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+    if: |
+      !(github.event_name == 'push' && contains(github.event.head_commit.message, '[skip ci]')) &&
+      !(github.event_name == 'pull_request' && contains(join(github.event.pull_request.title, github.event.pull_request.body), '[skip ci]'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v2
+        with:
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      # - name: Add Helm Repo
+      #   run: helm repo add main https://charts.alexbabel.com --username $HELM_USERNAME --password $HELM_PASSWORD
+      #   env:
+      #     HELM_PASSWORD: ${{ secrets.HELM_PASSWORD }}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Semantic release
+        run: ./release.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+          GIT_AUTHOR_NAME: ${{ secrets.GIT_USERNAME }}
+          GIT_AUTHOR_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GIT_COMMITTER_NAME: ${{ secrets.GIT_USERNAME }}
+          GIT_COMMITTER_EMAIL: ${{ secrets.GIT_EMAIL }}

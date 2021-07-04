@@ -4,3 +4,6 @@
 !charts/**/templates/*secret*
 .DS_Store
 !/charts
+cr.yaml
+*.tgz
+node_modules/
