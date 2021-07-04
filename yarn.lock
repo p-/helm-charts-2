@@ -3126,7 +3126,7 @@ semantic-release-helm@^2.0.1:
 
 "semantic-release-monorepo@git+https://github.com/AlexanderBabel/semantic-release-monorepo":
   version "0.0.0-development"
-  resolved "git+https://github.com/AlexanderBabel/semantic-release-monorepo#604415f5f379817d8353b872afdf7157cc176796"
+  resolved "git+https://github.com/AlexanderBabel/semantic-release-monorepo#b962cd9b859c1d2c4b1be73f1c26bab264df738a"
   dependencies:
     debug "^3.1.0"
     execa "^0.8.0"

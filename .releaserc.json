@@ -1,6 +1,5 @@
 {
   "branches": ["main"],
-  "tagFormat": "${process.env.CHART_NAME}-${version}",
   "extends": "semantic-release-monorepo",
   "plugins": [
     "@semantic-release/commit-analyzer",
