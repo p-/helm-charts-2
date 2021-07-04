@@ -19,7 +19,6 @@ if [[ ! -d "$cache_dir" ]]; then
 fi
 
 git fetch
-git remote
 git checkout "$CR_PAGES_BRANCH"
 
 cr index

@@ -65,5 +65,5 @@ jobs:
           CR_PACKAGE_PATH: charts
           CR_INDEX_PATH: index.yaml
           CR_CHARTS_REPO: https://charts.alexbabel.com
-          CR_PAGES_BRANCH: origin/gh-pages
+          CR_PAGES_BRANCH: gh-pages
           CR_COMMIT_MESSAGE: "chore: update index.yaml"
