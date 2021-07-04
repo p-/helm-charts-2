@@ -16,4 +16,15 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/common-1.0.1/common-1.0.1.tgz
     version: 1.0.1
-generated: "2021-07-04T14:08:07.19414+02:00"
+  vernemq:
+  - apiVersion: v1
+    appVersion: 1.12.0
+    created: "2021-07-04T12:55:38.236252482Z"
+    description: VerneMQ is a high-performance, distributed MQTT message broker
+    digest: c7941ad0a2421f654dd6fa1f3c29953ba8605198dbc3ca5c8e8c19f04a1124c7
+    icon: http://www.stickpng.com/assets/thumbs/58482b21cef1014c0b5e4a24.png
+    name: vernemq
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/vernemq-1.6.9/vernemq-1.6.9.tgz
+    version: 1.6.9
+generated: "2021-07-04T12:55:38.236259282Z"
