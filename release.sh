@@ -2,11 +2,11 @@
 
 runSemanticRelease() {
   cp .releaserc.json "$1"
-  CHART_NAME=${1#charts/}
+  export CHART_NAME=${1#charts/}
   echo "{\"name\":\"$CHART_NAME\"}" >"$1/package.json"
   DIR_PATH=$(pwd)
   cd "$1" || exit
-  "CHART_NAME=$CHART_NAME $DIR_PATH/node_modules/.bin/semantic-release"
+  "$DIR_PATH/node_modules/.bin/semantic-release"
 
   cd ../..
 }
