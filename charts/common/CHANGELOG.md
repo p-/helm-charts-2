@@ -1,3 +1,10 @@
+# [common-1.0.1](https://github.com/AlexanderBabel/helm-charts/compare/common-1.0.0...common-1.0.1) (2021-07-04)
+
+
+### Bug Fixes
+
+* update version number ([b080357](https://github.com/AlexanderBabel/helm-charts/commit/b0803573cbbb2d22a8071f4793a391741d95d4a2))
+
 # common-1.0.0 (2021-07-04)
 
 
