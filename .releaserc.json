@@ -16,7 +16,7 @@
       {
         "assets": [
           {
-            "path": "$CHART_NAME-${nextRelease.version}.tgz"
+            "path": "./*.tgz"
           }
         ]
       }
