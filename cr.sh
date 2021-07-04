@@ -25,3 +25,5 @@ cr index
 git add index.yaml
 git commit -m "$CR_COMMIT_MESSAGE"
 git push
+
+git checkout -
