@@ -63,4 +63,5 @@ jobs:
           CR_OWNER: AlexanderBabel
           CR_GIT_REPO: helm-charts
           CR_PACKAGE_PATH: charts
+          CR_INDEX_PATH: index.yaml
           CR_CHARTS_REPO: https://charts.alexbabel.com
