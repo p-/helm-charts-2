@@ -3124,9 +3124,10 @@ semantic-release-helm@^2.0.1:
     path "^0.12.7"
     semver "^7.3.4"
 
-"semantic-release-monorepo@git+https://github.com/AlexanderBabel/semantic-release-monorepo":
-  version "0.0.0-development"
-  resolved "git+https://github.com/AlexanderBabel/semantic-release-monorepo#604415f5f379817d8353b872afdf7157cc176796"
+semantic-release-monorepo@^7.0.4:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/semantic-release-monorepo/-/semantic-release-monorepo-7.0.5.tgz#96b7ff0aff183db2f81e71e5f821ed4adc7d5647"
+  integrity sha512-riOYD8eZ5PIST7o97Ltc01l8VQW7q01NmPDRPOBycaeZczJowyKkzkBfo92kTIWDFWbdO3G8A695JrrYjoTaiw==
   dependencies:
     debug "^3.1.0"
     execa "^0.8.0"
