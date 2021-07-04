@@ -1,3 +1,10 @@
+# [common-v1.0.2](https://github.com/AlexanderBabel/helm-charts/compare/common-v1.0.1...common-v1.0.2) (2021-07-04)
+
+
+### Bug Fixes
+
+* update asset upload ([1ec2acb](https://github.com/AlexanderBabel/helm-charts/commit/1ec2acb2dd7ca2eee562765dddd4dc2d6af4a1d6))
+
 # [common-v1.0.1](https://github.com/AlexanderBabel/helm-charts/compare/common-v1.0.0...common-v1.0.1) (2021-07-04)
 
 
