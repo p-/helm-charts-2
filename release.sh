@@ -15,6 +15,8 @@ echo "[Script] Running semantic-release for charts/common"
 runSemanticRelease "charts/common"
 
 for chart in charts/*; do
-  echo "[Script] Running semantic-release for $chart"
-  runSemanticRelease "$chart"
+  if [ -d "$chart" ]; then
+    echo "[Script] Running semantic-release for $chart"
+    runSemanticRelease "$chart"
+  fi
 done
