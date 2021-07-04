@@ -1,5 +1,6 @@
 {
   "branches": ["main"],
+  "tagFormat": "${version}",
   "extends": "semantic-release-monorepo",
   "plugins": [
     "@semantic-release/commit-analyzer",
@@ -24,7 +25,7 @@
     [
       "@semantic-release/exec",
       {
-        "publishCmd": "rm $CHART_NAME-${nextRelease.version}.tgz"
+        "publishCmd": "mv *.tgz ../"
       }
     ],
     [

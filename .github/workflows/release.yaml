@@ -55,3 +55,12 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ secrets.GIT_EMAIL }}
           GIT_COMMITTER_NAME: ${{ secrets.GIT_USERNAME }}
           GIT_COMMITTER_EMAIL: ${{ secrets.GIT_EMAIL }}
+
+      - name: Update index.yaml
+        run: ./cr.sh
+        env:
+          CR_TOKEN: ${{ secrets.GH_TOKEN }}
+          CR_OWNER: AlexanderBabel
+          CR_GIT_REPO: helm-charts
+          CR_PACKAGE_PATH: charts
+          CR_CHARTS_REPO: https://charts.alexbabel.com
