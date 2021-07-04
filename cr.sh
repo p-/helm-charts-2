@@ -18,4 +18,10 @@ if [[ ! -d "$cache_dir" ]]; then
   export PATH="$cache_dir:$PATH"
 fi
 
-cr index --push
+git checkout "$CR_PAGES_BRANCH"
+
+cr index
+
+git add index.yaml
+git commit -m "$CR_COMMIT_MESSAGE"
+git push

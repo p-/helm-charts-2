@@ -7,3 +7,4 @@
 cr.yaml
 *.tgz
 node_modules/
+Chart.lock
