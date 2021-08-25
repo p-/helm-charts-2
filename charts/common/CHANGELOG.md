@@ -1,3 +1,10 @@
+# [common-2.1.6](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.5...common-2.1.6) (2021-08-25)
+
+
+### Bug Fixes
+
+* add max unavailable for deployment ([6170576](https://github.com/AlexanderBabel/helm-charts/commit/61705767921d2215112e2585a7d32996f5e7195e))
+
 # [common-2.1.5](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.4...common-2.1.5) (2021-08-25)
 
 
