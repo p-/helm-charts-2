@@ -1,3 +1,10 @@
+# [common-2.1.3](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.2...common-2.1.3) (2021-08-25)
+
+
+### Bug Fixes
+
+* update check for cronjob ([905f512](https://github.com/AlexanderBabel/helm-charts/commit/905f5128bf8b86afdffd2e9dd9609f867af4526f))
+
 # [common-2.1.2](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.1...common-2.1.2) (2021-08-25)
 
 
