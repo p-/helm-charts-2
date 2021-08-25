@@ -1,10 +1,10 @@
 envTpl:
   CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
-  PORT: "{{ .Values.service.port.port | default 80 }}"
+  PORT: "{{ .Values.service.port.port | default 8080 }}"
 
 service:
   port:
-    port: 80
+    port: 8080
 
 probes:
   liveness:
