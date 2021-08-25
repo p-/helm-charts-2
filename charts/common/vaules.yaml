@@ -1,0 +1,65 @@
+service:
+  port:
+    port: 80
+
+probes:
+  liveness:
+    enabled: true
+
+  readiness:
+    enabled: false
+
+  startup:
+    enabled: false
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+      - SETPCAP
+      - MKNOD
+      - AUDIT_WRITE
+      - CHOWN
+      - NET_RAW
+      - DAC_OVERRIDE
+      - FOWNER
+      - FSETID
+      - KILL
+      - SETGID
+      - SETUID
+      - NET_BIND_SERVICE
+      - SYS_CHROOT
+      - SETFCAP
+  readOnlyRootFilesystem: true
+
+envTpl:
+  CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
+
+cronjob:
+  enabled: false
+  schedule: "0 * * * *"
+  backoffLimit: 0
+  startingDeadlineSeconds: 120
+  activeDeadlineSeconds: 3300
+  concurrencyPolicy: Forbid
+  restartPolicy: Never
+
+serviceMonitor:
+  ## If true, a ServiceMonitor CRD is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  ##
+  enabled: false
+  #  namespace: monitoring
+  labels: {}
+  interval: 10s
+  scrapeTimeout: 10s
+  scheme: http
+  relabelings: []
+  targetLabels: []
+  metricRelabelings: []
+  sampleLimit: 0
+  metricsPort: http
