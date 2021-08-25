@@ -2,6 +2,12 @@ controller:
   # Valid options are deployment, daemonset, statefulset or cronjob
   type: deployment
 
+  strategy:
+    ## For Deployments, valid values are Recreate and RollingUpdate
+    ## For StatefulSets, valid values are OnDelete and RollingUpdate
+    ## DaemonSets ignore this
+    type: RollingUpdate
+
 envTpl:
   CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
   PORT: "{{ .Values.service.main.ports.http.port | default 8080 }}"
@@ -13,14 +19,7 @@ service:
         port: 8080
 
 image:
-  imagePullPolicy: IfNotPresent
-
-replicas: 1
-strategy:
-  ## For Deployments, valid values are Recreate and RollingUpdate
-  ## For StatefulSets, valid values are OnDelete and RollingUpdate
-  ## DaemonSets ignore this
-  type: RollingUpdate
+  pullPolicy: IfNotPresent
 
 probes:
   liveness:
