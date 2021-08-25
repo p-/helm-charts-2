@@ -3,6 +3,24 @@ entries:
   common:
   - apiVersion: v2
     appVersion: 4.0.0
+    created: "2021-08-25T19:21:44.642656418Z"
+    dependencies:
+    - import-values:
+      - child: addons
+        parent: addons
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.0.0
+    description: common
+    digest: 2456938a81d50832259f0e1652c9c379e06cca920684cd1289e011421ad5edee
+    kubeVersion: '>=1.17.0-0'
+    name: common
+    type: application
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/common-2.1.8/common-2.1.8.tgz
+    version: 2.1.8
+  - apiVersion: v2
+    appVersion: 4.0.0
     created: "2021-08-25T18:47:39.228271086Z"
     dependencies:
     - import-values:
@@ -189,4 +207,4 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/vernemq-1.6.9/vernemq-1.6.9.tgz
     version: 1.6.9
-generated: "2021-08-25T18:47:39.228327387Z"
+generated: "2021-08-25T19:21:44.642903419Z"
