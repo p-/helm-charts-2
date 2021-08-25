@@ -1,3 +1,10 @@
+# [common-2.1.4](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.3...common-2.1.4) (2021-08-25)
+
+
+### Bug Fixes
+
+* update port and add deployment strategy ([0471796](https://github.com/AlexanderBabel/helm-charts/commit/04717963ef5bb2fd8b8410d1d0aca7f35485592c))
+
 # [common-2.1.3](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.2...common-2.1.3) (2021-08-25)
 
 
