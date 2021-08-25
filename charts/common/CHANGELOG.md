@@ -1,3 +1,10 @@
+# [common-2.1.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.0.0...common-2.1.0) (2021-08-25)
+
+
+### Features
+
+* add cronjob and servicemonitor support ([3aa693e](https://github.com/AlexanderBabel/helm-charts/commit/3aa693e00973956ec084587608e60501cee7dd0f))
+
 # [common-2.0.0](https://github.com/AlexanderBabel/helm-charts/compare/common-1.0.1...common-2.0.0) (2021-08-25)
 
 
