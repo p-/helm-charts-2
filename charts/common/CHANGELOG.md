@@ -1,3 +1,10 @@
+# [common-2.1.8](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.7...common-2.1.8) (2021-08-25)
+
+
+### Bug Fixes
+
+* rename envTpl to env ([239e99d](https://github.com/AlexanderBabel/helm-charts/commit/239e99dd101a18a907776710384ebf877b8d7574))
+
 # [common-2.1.7](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.6...common-2.1.7) (2021-08-25)
 
 
