@@ -2,11 +2,11 @@ controller:
   # Valid options are deployment, daemonset, statefulset or cronjob
   type: deployment
 
-  strategy:
-    ## For Deployments, valid values are Recreate and RollingUpdate
-    ## For StatefulSets, valid values are OnDelete and RollingUpdate
-    ## DaemonSets ignore this
-    type: RollingUpdate
+  # For Deployments, valid values are Recreate (default) and RollingUpdate.
+  # For StatefulSets, valid values are OnDelete and RollingUpdate (default).
+  # DaemonSets ignore this.
+  strategy: RollingUpdate
+  rollingUpdate:
     unavailable: 25%
 
 envTpl:
