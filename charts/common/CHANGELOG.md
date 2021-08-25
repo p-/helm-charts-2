@@ -1,3 +1,10 @@
+# [common-2.1.5](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.4...common-2.1.5) (2021-08-25)
+
+
+### Bug Fixes
+
+* move strategy in controller object ([38d6304](https://github.com/AlexanderBabel/helm-charts/commit/38d6304729d2f6d3d4606d44a8346a77622cf830))
+
 # [common-2.1.4](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.3...common-2.1.4) (2021-08-25)
 
 
