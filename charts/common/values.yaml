@@ -1,3 +1,7 @@
+envTpl:
+  CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
+  PORT: "{{ .Values.service.port.port | default 80 }}"
+
 service:
   port:
     port: 80
@@ -35,9 +39,6 @@ securityContext:
       - SYS_CHROOT
       - SETFCAP
   readOnlyRootFilesystem: true
-
-envTpl:
-  CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
 
 cronjob:
   enabled: false
