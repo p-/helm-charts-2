@@ -1,3 +1,10 @@
+# [common-2.1.1](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.0...common-2.1.1) (2021-08-25)
+
+
+### Bug Fixes
+
+* rename values.yaml ([5ab3ab7](https://github.com/AlexanderBabel/helm-charts/commit/5ab3ab75095b88d6d397428a6f9e49ae072b33cc))
+
 # [common-2.1.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.0.0...common-2.1.0) (2021-08-25)
 
 
