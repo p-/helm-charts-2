@@ -1,3 +1,10 @@
+# [common-2.1.7](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.6...common-2.1.7) (2021-08-25)
+
+
+### Bug Fixes
+
+* update strategy tree ([06a6a9d](https://github.com/AlexanderBabel/helm-charts/commit/06a6a9d96f4da9c57672853998e66770f0902707))
+
 # [common-2.1.6](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.5...common-2.1.6) (2021-08-25)
 
 
