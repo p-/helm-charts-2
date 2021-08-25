@@ -9,7 +9,7 @@ controller:
   rollingUpdate:
     unavailable: 25%
 
-envTpl:
+env:
   CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
   PORT: "{{ .Values.service.main.ports.http.port | default 8080 }}"
 
