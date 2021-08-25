@@ -4,11 +4,23 @@ controller:
 
 envTpl:
   CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
-  PORT: "{{ .Values.service.port.port | default 8080 }}"
+  PORT: "{{ .Values.service.main.ports.http.port | default 8080 }}"
 
 service:
-  port:
-    port: 8080
+  main:
+    ports:
+      http:
+        port: 8080
+
+image:
+  imagePullPolicy: IfNotPresent
+
+replicas: 1
+strategy:
+  ## For Deployments, valid values are Recreate and RollingUpdate
+  ## For StatefulSets, valid values are OnDelete and RollingUpdate
+  ## DaemonSets ignore this
+  type: RollingUpdate
 
 probes:
   liveness:
