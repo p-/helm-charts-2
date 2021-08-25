@@ -1,3 +1,7 @@
+controller:
+  # Valid options are deployment, daemonset, statefulset or cronjob
+  type: deployment
+
 envTpl:
   CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
   PORT: "{{ .Values.service.port.port | default 8080 }}"

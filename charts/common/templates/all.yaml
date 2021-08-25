@@ -1,5 +1,5 @@
 {{ include "common.all" . }}
 {{ include "common.servicemonitor" . }}
-{{ if eq .Values.controllerType "cronjob" }}
+{{ if eq .Values.controller.type "cronjob" }}
     {{- include "common.cronjob" . | nindent 0 }}
 {{- end -}}
