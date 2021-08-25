@@ -1,3 +1,10 @@
+# [common-2.1.2](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.1...common-2.1.2) (2021-08-25)
+
+
+### Bug Fixes
+
+* update default port ([1ac9518](https://github.com/AlexanderBabel/helm-charts/commit/1ac9518ff477e2ade7b3af7de52e2cdabbc31222))
+
 # [common-2.1.1](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.0...common-2.1.1) (2021-08-25)
 
 
