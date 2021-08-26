@@ -44,7 +44,7 @@ jobs:
       #     HELM_PASSWORD: ${{ secrets.HELM_PASSWORD }}
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
       - name: Semantic release
         run: ./release.sh
