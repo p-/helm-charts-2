@@ -16,4 +16,4 @@ name: matrix
 sources:
   - https://github.com/dacruz21/matrix-chart
 type: application
-version: 2.8.1
+version: 2.8.2
