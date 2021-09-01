@@ -1,3 +1,10 @@
+# [matrix-2.9.0](https://github.com/AlexanderBabel/helm-charts/compare/matrix-2.8.2...matrix-2.9.0) (2021-09-01)
+
+
+### Features
+
+* **ingress:** add support for networking.k8s.io/v1 ([d2f4221](https://github.com/AlexanderBabel/helm-charts/commit/d2f422100b57aa469940f6aca267e057c4204743))
+
 # [matrix-2.8.2](https://github.com/AlexanderBabel/helm-charts/compare/matrix-2.8.1...matrix-2.8.2) (2021-08-26)
 
 
