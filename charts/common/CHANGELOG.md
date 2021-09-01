@@ -1,3 +1,10 @@
+# [common-2.2.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.8...common-2.2.0) (2021-09-01)
+
+
+### Features
+
+* **ServiceMonitor:** add support for additionalEndpointOptions ([88be8fe](https://github.com/AlexanderBabel/helm-charts/commit/88be8fe6ffbd7a1b2c88bca9c827ec4738ef0488))
+
 # [common-2.1.8](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.7...common-2.1.8) (2021-08-25)
 
 
