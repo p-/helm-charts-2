@@ -80,3 +80,7 @@ serviceMonitor:
   metricRelabelings: []
   sampleLimit: 0
   metricsPort: http
+  additionalEndpointOptions: {}
+    # params:
+    #   url_param_1: [ 'value' ]
+    #   url_param_2: [ 'value' ]
