@@ -31,8 +31,8 @@ spec:
     metricRelabelings:
     {{ toYaml .Values.serviceMonitor.metricRelabelings | nindent 4 }}
     {{- end }}
-    {{- if .Values.metrics.serviceMonitor.additionalEndpointOptions }}
-    {{- toYaml .Values.metrics.serviceMonitor.additionalEndpointOptions | nindent 4 }}
+    {{- if .Values.serviceMonitor.additionalEndpointOptions }}
+    {{- toYaml .Values.serviceMonitor.additionalEndpointOptions | nindent 4 }}
     {{- end }}
   jobLabel: "{{ .Release.Name }}"
   selector:
