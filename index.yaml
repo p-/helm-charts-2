@@ -221,6 +221,30 @@ entries:
   matrix:
   - apiVersion: v2
     appVersion: 1.22.1
+    created: "2021-09-01T09:24:11.736777038Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.helm.sh/stable
+      version: 8.0.0
+    description: A Helm Chart to deploy a Matrix homeserver stack into Kubernetes
+    digest: d77b33507385bec19897c69598a2cc5727bf9d39ea8256a31d84934d40fa27b0
+    home: https://github.com/dacruz21/matrix-chart
+    icon: https://dacruz21.github.io/helm-charts/icons/matrix.svg
+    kubeVersion: '>=1.17.0-0'
+    maintainers:
+    - email: david@typokign.com
+      name: David Cruz
+      url: https://github.com/dacruz21/
+    name: matrix
+    sources:
+    - https://github.com/dacruz21/matrix-chart
+    type: application
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/matrix-2.9.0/matrix-2.9.0.tgz
+    version: 2.9.0
+  - apiVersion: v2
+    appVersion: 1.22.1
     created: "2021-08-26T19:31:23.529369903Z"
     dependencies:
     - condition: postgresql.enabled
@@ -253,4 +277,4 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/vernemq-1.6.9/vernemq-1.6.9.tgz
     version: 1.6.9
-generated: "2021-08-26T19:31:23.529500804Z"
+generated: "2021-09-01T09:24:11.736932741Z"
