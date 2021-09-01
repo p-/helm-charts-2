@@ -1,3 +1,10 @@
+# [common-2.2.1](https://github.com/AlexanderBabel/helm-charts/compare/common-2.2.0...common-2.2.1) (2021-09-01)
+
+
+### Bug Fixes
+
+* **Service Monitor:** update path for additionalEndpointOptions ([e699d72](https://github.com/AlexanderBabel/helm-charts/commit/e699d72e5c09901766be4dcba9fe10ebd89cb922))
+
 # [common-2.2.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.1.8...common-2.2.0) (2021-09-01)
 
 
