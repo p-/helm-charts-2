@@ -1,8 +1,16 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":disableRateLimiting"
   ],
   "ignorePaths": [
     "**/values.yaml"
+  ],
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
   ]
 }
