@@ -5,7 +5,7 @@
   ],
   "ignorePaths": [
     "**/values.yaml",
-    "matrix/*"
+    "**/matrix/*"
   ],
   "prHourlyLimit": 0,
   "packageRules": [
