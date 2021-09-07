@@ -11,7 +11,7 @@ controller:
 
 env:
   CONFIG_CHECKSUM: '{{ include "common.secret" . | sha256sum }}'
-  PORT: "{{ .Values.service.main.ports.http.port | default 8080 }}"
+  PORT: "{{ .Values.service.main.ports.http.targetPort | default (.Values.service.main.ports.http.port | default 8080) }}"
 
 service:
   main:
@@ -80,7 +80,8 @@ serviceMonitor:
   metricRelabelings: []
   sampleLimit: 0
   metricsPort: http
-  additionalEndpointOptions: {}
+  additionalEndpointOptions:
+    {}
     # params:
     #   url_param_1: [ 'value' ]
     #   url_param_2: [ 'value' ]
