@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "config:base",
+    ":disableRateLimiting"
+  ],
+  "ignorePaths": [
+    "**/values.yaml",
+    "**/matrix/*"
+  ],
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
+}
