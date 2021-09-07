@@ -1,3 +1,10 @@
+# [common-2.2.2](https://github.com/AlexanderBabel/helm-charts/compare/common-2.2.1...common-2.2.2) (2021-09-07)
+
+
+### Bug Fixes
+
+* **env/PORT:** consider targetPort ([b4ce933](https://github.com/AlexanderBabel/helm-charts/commit/b4ce93352e1d0265bd3ae584579c66e0953ce176))
+
 # [common-2.2.1](https://github.com/AlexanderBabel/helm-charts/compare/common-2.2.0...common-2.2.1) (2021-09-01)
 
 
