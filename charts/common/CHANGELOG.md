@@ -1,3 +1,15 @@
+# [common-2.3.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.2.3...common-2.3.0) (2021-10-21)
+
+
+### Bug Fixes
+
+* **service:** only set targetPort to container port ([cbf1bf7](https://github.com/AlexanderBabel/helm-charts/commit/cbf1bf774b651208cb2a57ee8522f058b4158a8c))
+
+
+### Features
+
+* improve pod security by disabling enableServiceLinks and automountServiceAccountToken ([7dbe13d](https://github.com/AlexanderBabel/helm-charts/commit/7dbe13d36ceb30f840d176cccb3acf5317ecb2da))
+
 # [common-2.2.3](https://github.com/AlexanderBabel/helm-charts/compare/common-2.2.2...common-2.2.3) (2021-09-28)
 
 
