@@ -86,3 +86,6 @@ serviceMonitor:
     # params:
     #   url_param_1: [ 'value' ]
     #   url_param_2: [ 'value' ]
+
+enableServiceLinks: false
+automountServiceAccountToken: false
