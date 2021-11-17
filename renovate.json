@@ -1,17 +1,30 @@
 {
-  "extends": [
-    "config:base",
-    ":disableRateLimiting"
-  ],
-  "ignorePaths": [
-    "**/values.yaml",
-    "**/matrix/*"
-  ],
+  "extends": ["config:base", ":disableRateLimiting"],
+  "ignorePaths": ["**/values.yaml", "**/matrix/*"],
   "prHourlyLimit": 0,
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
+    },
+
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "labels": ["renovate/helm", "dep/patch"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "labels": ["renovate/helm", "dep/minor"]
+    },
+    {
+      "matchDatasources": ["helm"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "feat(helm)!: ",
+      "labels": ["renovate/helm", "dep/major"]
     }
   ]
 }
