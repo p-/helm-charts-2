@@ -1,0 +1,103 @@
+{{- range $database := .Values.databases }}
+{{- with $ -}}
+{{- $database := set $database "name" ($database.backupName | lower | nospace | replace "/" "-") }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-{{ $database.name }}
+  labels:
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: {{ $database.schedule | default .Values.cronjob.schedule | quote }}
+  concurrencyPolicy: {{ .Values.cronjob.concurrencyPolicy | default "Forbid" }}
+  {{- if .Values.cronjob.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.cronjob.startingDeadlineSeconds }}
+  {{- end }}
+  successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit | default 1 }}
+  failedJobsHistoryLimit: {{ .Values.cronjob.failedJobsHistoryLimit | default 1 }}
+  jobTemplate:
+    spec:
+      {{- if .Values.cronjob.activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ .Values.cronjob.activeDeadlineSeconds }}
+      {{- end }}
+      backoffLimit: {{ .Values.cronjob.backoffLimit | default 3 }}
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+        spec:
+          restartPolicy: {{ .Values.cronjob.restartPolicy | default "Never" }}
+          serviceAccountName: default
+          automountServiceAccountToken: {{ .Values.automountServiceAccountToken }}
+            {{- with .Values.podSecurityContext }}
+          securityContext:
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.dnsPolicy }}
+          dnsPolicy: {{ .Values.dnsPolicy }}
+            {{- else if .Values.hostNetwork }}
+          dnsPolicy: ClusterFirstWithHostNet
+            {{- else }}
+          dnsPolicy: ClusterFirst
+            {{- end }}
+            {{- with .Values.dnsConfig }}
+          dnsConfig:
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          enableServiceLinks: {{ .Values.enableServiceLinks }}
+          containers:
+            - name: backup
+              image: {{ printf "%s:%s" .Values.image.repository .Values.image.tag | quote }}
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              {{- with .Values.securityContext }}
+              securityContext:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              envFrom:
+                - secretRef:
+                    name: backup-{{ $database.name }}
+              {{- with .Values.volumeMounts }}
+              volumeMounts:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              {{- with .Values.resources }}
+              resources:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+          {{- with .Values.volumes }}
+          volumes:
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backup-{{ $database.name }}
+  labels:
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+type: Opaque
+data:
+  AWS_ACCESS_KEY_ID: {{ .Values.credentials.accessKeyId | b64enc | quote }}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.credentials.secretAccessKey | b64enc | quote }}
+  BUCKET_NAME: {{ .Values.credentials.bucketName | b64enc | quote }}
+  ENDPOINT_URL: {{ .Values.credentials.endpoint | b64enc | quote }}
+  BACKUP_NAME: {{ $database.backupName | b64enc | quote }}
+  DATABASE_URL: {{ $database.databaseUrl | b64enc | quote }}
+  ENCRYPTION_KEY: {{ $database.encryptionKey | b64enc | quote }}
+{{- end }}
+{{- end }}
