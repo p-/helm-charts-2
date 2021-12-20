@@ -1,3 +1,17 @@
+# [common-2.4.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.3.1...common-2.4.0) (2021-11-22)
+
+
+### Features
+
+* **deps:** update helm release common to v4.2.0 ([#16](https://github.com/AlexanderBabel/helm-charts/issues/16)) ([68b2014](https://github.com/AlexanderBabel/helm-charts/commit/68b2014397fbcbb81424f82fdbd11809570ea816))
+
+# [common-2.3.1](https://github.com/AlexanderBabel/helm-charts/compare/common-2.3.0...common-2.3.1) (2021-11-17)
+
+
+### Bug Fixes
+
+* update values ([f72eece](https://github.com/AlexanderBabel/helm-charts/commit/f72eecee5ca5af7e8a9b03d02ce37d9d9b250fc4))
+
 # [common-2.3.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.2.3...common-2.3.0) (2021-10-21)
 
 
