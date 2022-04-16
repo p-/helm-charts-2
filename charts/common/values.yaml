@@ -55,7 +55,7 @@ securityContext:
       - NET_BIND_SERVICE
       - SYS_CHROOT
       - SETFCAP
-
+  allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
 
 cronjob:
