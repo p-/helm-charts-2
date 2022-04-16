@@ -15,6 +15,24 @@ entries:
   common:
   - apiVersion: v2
     appVersion: 4.0.0
+    created: "2022-04-16T11:17:37.525859022Z"
+    dependencies:
+    - import-values:
+      - child: addons
+        parent: addons
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.2.0
+    description: common
+    digest: 160699d92d1eba9447fc789c68141d0b3b8e0df8d788f0c471fa9554ec67fc89
+    kubeVersion: '>=1.17.0-0'
+    name: common
+    type: application
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/common-2.5.0/common-2.5.0.tgz
+    version: 2.5.0
+  - apiVersion: v2
+    appVersion: 4.0.0
     created: "2021-11-22T13:18:22.655401533Z"
     dependencies:
     - import-values:
@@ -345,6 +363,92 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/cronjob-1.0.2/cronjob-1.0.2.tgz
     version: 1.0.2
+  dendrite:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: Add presence options and update to dendrite v0.8.1
+    apiVersion: v2
+    appVersion: v0.8.1
+    created: "2022-04-16T11:17:37.654096728Z"
+    dependencies:
+    - name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.15
+    - condition: nats.enabled
+      name: nats
+      repository: https://nats-io.github.io/k8s/helm/charts/
+      version: 0.15.1
+    - alias: clientapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: mediaapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: syncapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: roomserver
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: eduserver
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: federationapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: keyserver
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: userapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: appserviceapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    description: Dendrite Matrix Homeserver
+    digest: 5492b4104eabdbe840cded382d725166796bf6ff438da62c24b3db4fc0f75c55
+    home: https://github.com/k8s-at-home/charts/tree/master/charts/stable/dendrite
+    keywords:
+    - dendrite
+    - matrix
+    - homeserver
+    - monolith
+    - federation
+    - polylith
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: jonathan@jonnobrow.co.uk
+      name: jonnobrow
+    name: dendrite
+    sources:
+    - https://github.com/matrix-org/dendrite
+    - https://github.com/matrix-org/dendrite/tree/master/build/docker
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/dendrite-4.1.0/dendrite-4.1.0.tgz
+    version: 4.1.0
   generic:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -415,4 +519,4 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/vernemq-1.6.9/vernemq-1.6.9.tgz
     version: 1.6.9
-generated: "2021-12-20T18:36:28.599663344Z"
+generated: "2022-04-16T11:17:37.654364729Z"
