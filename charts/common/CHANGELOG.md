@@ -1,3 +1,10 @@
+# [common-2.5.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.4.0...common-2.5.0) (2022-04-16)
+
+
+### Features
+
+* add presence options and update to dendrite v0.8.1 ([ef1e8b8](https://github.com/AlexanderBabel/helm-charts/commit/ef1e8b85554985aeffbec3bf340011907a172cac))
+
 # [common-2.4.0](https://github.com/AlexanderBabel/helm-charts/compare/common-2.3.1...common-2.4.0) (2021-11-22)
 
 
