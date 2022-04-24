@@ -1,3 +1,15 @@
+# [dendrite-4.2.0](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-4.1.0...dendrite-4.2.0) (2022-04-24)
+
+
+### Bug Fixes
+
+* **deps:** update helm release postgresql to v11.1.23 ([#30](https://github.com/AlexanderBabel/helm-charts/issues/30)) ([667e83b](https://github.com/AlexanderBabel/helm-charts/commit/667e83bc11349b91c077485c9323432592a21bd1))
+
+
+### Features
+
+* **deps:** update helm release nats to v0.16.0 ([#31](https://github.com/AlexanderBabel/helm-charts/issues/31)) ([0ce5044](https://github.com/AlexanderBabel/helm-charts/commit/0ce5044c99542e679cd8e2b8d25157077b03f74c))
+
 # [dendrite-4.1.0](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-4.0.0...dendrite-4.1.0) (2022-04-16)
 
 
