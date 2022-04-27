@@ -78,4 +78,4 @@ name: dendrite
 sources:
   - https://github.com/matrix-org/dendrite
   - https://github.com/matrix-org/dendrite/tree/master/build/docker
-version: 4.2.0
+version: 4.2.1
