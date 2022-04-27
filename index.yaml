@@ -15,6 +15,24 @@ entries:
   common:
   - apiVersion: v2
     appVersion: 4.0.0
+    created: "2022-04-27T21:02:23.362233869Z"
+    dependencies:
+    - import-values:
+      - child: addons
+        parent: addons
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    description: common
+    digest: 96a372f9aebdcc29c4d2619f2efc2da2be01e80ce79dd5a622d819deb8f1fdcf
+    kubeVersion: '>=1.17.0-0'
+    name: common
+    type: application
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/common-2.6.0/common-2.6.0.tgz
+    version: 2.6.0
+  - apiVersion: v2
+    appVersion: 4.0.0
     created: "2022-04-16T11:17:37.525859022Z"
     dependencies:
     - import-values:
@@ -370,6 +388,91 @@ entries:
           description: Add presence options and update to dendrite v0.8.1
     apiVersion: v2
     appVersion: v0.8.1
+    created: "2022-04-27T21:02:23.488904179Z"
+    dependencies:
+    - name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.25
+    - condition: nats.enabled
+      name: nats
+      repository: https://nats-io.github.io/k8s/helm/charts/
+      version: 0.16.0
+    - alias: clientapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: mediaapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: syncapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: roomserver
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: eduserver
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: federationapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: keyserver
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: userapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    - alias: appserviceapi
+      condition: dendrite.polylithEnabled
+      name: common
+      repository: https://library-charts.k8s-at-home.com
+      version: 4.3.0
+    description: Dendrite Matrix Homeserver
+    digest: bdd6b6ef9eb8d7ee1895f24183abda837044d9499caeb7f1449dd6e17bb45b98
+    home: https://github.com/k8s-at-home/charts/tree/master/charts/stable/dendrite
+    keywords:
+    - dendrite
+    - matrix
+    - homeserver
+    - monolith
+    - federation
+    - polylith
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: jonathan@jonnobrow.co.uk
+      name: jonnobrow
+    name: dendrite
+    sources:
+    - https://github.com/matrix-org/dendrite
+    - https://github.com/matrix-org/dendrite/tree/master/build/docker
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/dendrite-4.2.1/dendrite-4.2.1.tgz
+    version: 4.2.1
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: Add presence options and update to dendrite v0.8.1
+    apiVersion: v2
+    appVersion: v0.8.1
     created: "2022-04-24T10:10:58.763533658Z"
     dependencies:
     - name: common
@@ -604,4 +707,4 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/vernemq-1.6.9/vernemq-1.6.9.tgz
     version: 1.6.9
-generated: "2022-04-24T10:10:58.763616458Z"
+generated: "2022-04-27T21:02:23.489048179Z"
