@@ -696,6 +696,38 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/matrix-2.8.2/matrix-2.8.2.tgz
     version: 2.8.2
+  mautrix-signal:
+  - annotations:
+      artifacthub.io/changes: |
+        - both signald and mautrix-signal are using user 1337 now
+        - update to latest signald
+      artifacthub.io/containsSecurityUpdates: "true"
+      artifacthub.io/images: |
+        - name: mautrix-signal
+          image: dock.mau.dev/mautrix/signal:latest
+        - name: signald
+          image: signald/signald:0.18.2
+    apiVersion: v2
+    appVersion: latest
+    created: "2022-05-19T12:34:26.813229245Z"
+    description: A Matrix-Signal puppeting bridge.
+    digest: 3c60ea2a0ca38c0379aeb66cd01fc5df63d8d3090a79175d2043cc5a03e034f8
+    home: https://github.com/tulir/mautrix-signal
+    keywords:
+    - synapse
+    - chat
+    - matrix
+    - signal
+    maintainers:
+    - email: helm@gavinmogan.com
+      name: Gavin Mogan
+    name: mautrix-signal
+    sources:
+    - https://github.com/matrix-org/synapse
+    type: application
+    urls:
+    - https://github.com/AlexanderBabel/helm-charts/releases/download/mautrix-signal-0.1.1/mautrix-signal-0.1.1.tgz
+    version: 0.1.1
   vernemq:
   - apiVersion: v1
     appVersion: 1.12.0
@@ -707,4 +739,4 @@ entries:
     urls:
     - https://github.com/AlexanderBabel/helm-charts/releases/download/vernemq-1.6.9/vernemq-1.6.9.tgz
     version: 1.6.9
-generated: "2022-04-27T21:02:23.489048179Z"
+generated: "2022-05-19T12:34:26.813519049Z"
