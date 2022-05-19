@@ -3,7 +3,7 @@ type: application
 appVersion: latest
 description: A Matrix-Signal puppeting bridge.
 name: mautrix-signal
-version: 0.1.0
+version: 0.1.1
 keywords:
   - synapse
   - chat
@@ -19,7 +19,7 @@ annotations:
   artifacthub.io/changes: |
     - both signald and mautrix-signal are using user 1337 now
     - update to latest signald
-  artifacthub.io/containsSecurityUpdates: "true"
+  artifacthub.io/containsSecurityUpdates: 'true'
   artifacthub.io/images: |
     - name: mautrix-signal
       image: dock.mau.dev/mautrix/signal:latest
