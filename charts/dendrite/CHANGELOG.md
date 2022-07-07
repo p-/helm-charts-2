@@ -1,3 +1,10 @@
+# [dendrite-6.0.1](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-6.0.0...dendrite-6.0.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* downgrade ([f0cc557](https://github.com/AlexanderBabel/helm-charts/commit/f0cc5574281b12ea1d99e7db1e50e9e3bef910f1))
+
 # [dendrite-6.0.0](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-5.0.0...dendrite-6.0.0) (2022-07-07)
 
 
