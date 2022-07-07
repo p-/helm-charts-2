@@ -2,7 +2,7 @@
 {{- if .Values.postgresql.enabled}}
 {{- $connectionString = print "postgresql://" .Values.postgresql.auth.username ":" .Values.postgresql.auth.password "@" (include "common.names.fullname" $.Subcharts.postgresql) "/" -}}
 {{- end}}
-{{- $componentSpecificDatabaseConfig := or .Values.dendrite.polylithEnabled (or (not .Values.postgresql.enabled) (hasPrefix "postgresql://" .Values.database.connection_string)) -}}
+{{- $componentSpecificDatabaseConfig := or .Values.dendrite.polylithEnabled (and (not .Values.postgresql.enabled) (not (hasPrefix "postgresql://" .Values.database.connection_string))) -}}
 ---
 apiVersion: v1
 kind: Secret
