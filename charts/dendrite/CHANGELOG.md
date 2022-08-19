@@ -1,3 +1,16 @@
+# [dendrite-6.1.0](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-6.0.2...dendrite-6.1.0) (2022-08-19)
+
+
+### Bug Fixes
+
+* **deps:** update helm release nats to v0.17.5 ([#43](https://github.com/AlexanderBabel/helm-charts/issues/43)) ([b83f03f](https://github.com/AlexanderBabel/helm-charts/commit/b83f03f3e3e8f188aa82fa6d53458ffe2fb41aba))
+
+
+### Features
+
+* **deps:** update helm release common to v4.5.2 ([#33](https://github.com/AlexanderBabel/helm-charts/issues/33)) ([10004d1](https://github.com/AlexanderBabel/helm-charts/commit/10004d131450708791c3759d8f85bce663aec259))
+* **deps:** update helm release postgresql to v11.7.3 ([#34](https://github.com/AlexanderBabel/helm-charts/issues/34)) ([ece89c0](https://github.com/AlexanderBabel/helm-charts/commit/ece89c003c725ba133e99ea5fdf645d66687ab3a))
+
 # [dendrite-6.0.2](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-6.0.1...dendrite-6.0.2) (2022-07-07)
 
 
