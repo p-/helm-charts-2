@@ -27,7 +27,7 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: nats
-    version: 0.17.1
+    version: 0.17.5
     repository: https://nats-io.github.io/k8s/helm/charts/
     condition: nats.enabled
   - name: common
