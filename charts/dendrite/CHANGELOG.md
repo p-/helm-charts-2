@@ -1,3 +1,10 @@
+# [dendrite-6.0.2](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-6.0.1...dendrite-6.0.2) (2022-07-07)
+
+
+### Bug Fixes
+
+* update condition ([a48603b](https://github.com/AlexanderBabel/helm-charts/commit/a48603b870eab46f0e34b83c127490caf78699a8))
+
 # [dendrite-6.0.1](https://github.com/AlexanderBabel/helm-charts/compare/dendrite-6.0.0...dendrite-6.0.1) (2022-07-07)
 
 
