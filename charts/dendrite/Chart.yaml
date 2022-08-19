@@ -21,7 +21,7 @@ maintainers:
 dependencies:
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
   - name: postgresql
     version: 11.6.12
     repository: https://charts.bitnami.com/bitnami
@@ -32,42 +32,42 @@ dependencies:
     condition: nats.enabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: clientapi
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: mediaapi
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: syncapi
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: roomserver
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: federationapi
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: keyserver
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: userapi
     condition: dendrite.polylithEnabled
   - name: common
     repository: https://library-charts.k8s-at-home.com
-    version: 4.4.2
+    version: 4.5.2
     alias: appserviceapi
     condition: dendrite.polylithEnabled
 annotations:
