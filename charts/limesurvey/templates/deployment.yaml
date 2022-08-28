@@ -1,0 +1,254 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "limesurvey.fullname" . }}
+  labels:
+    {{- include "limesurvey.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "limesurvey.selectorLabels" . | nindent 6 }}
+  {{- if .Values.updateStrategy }}
+  strategy: {{- toYaml .Values.updateStrategy | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "limesurvey.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "limesurvey.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait-for-db
+          image: {{ include "limesurvey.imageUrl" . }}
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['/bin/sh', '-c',
+          'until nc -z -v -w30 "$DB_HOST" "$DB_PORT"; do
+          echo "Info: Waiting for database connection...";
+          sleep 5;
+          done']
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: DB_HOST
+              {{- if eq .Values.mariadb.enabled true }}
+              value: {{ include "limesurvey.mariadb.fullname" . }}
+              {{- else }}
+              value: {{ .Values.externalDatabase.host }}
+              {{- end }}
+            - name: DB_PORT
+              {{- if eq .Values.mariadb.enabled true }}
+              value: {{ coalesce .Values.mariadb.primary.service.ports.mysql .Values.mariadb.primary.service.port 3306 | quote }}
+              {{- else }}
+              value: {{ coalesce .Values.externalDatabase.port 3306 | quote }}
+              {{- end }}
+      containers:
+        - name: limesurvey-apache
+          image: {{ include "limesurvey.imageUrl" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: storage
+              mountPath: "/var/www/html/upload/"
+              {{- if .Values.persistence.subPath }}
+              subPath: {{ .Values.persistence.subPath }}
+              {{- end }}
+          {{- range .Values.extraVolumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              subPath: {{ .subPath | default "" }}
+              readOnly: {{ .readOnly }}
+          {{- end }}
+          {{- range .Values.extraEmptyDirMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+          {{- end }}
+          env:
+            - name: DB_TYPE
+              {{- if eq .Values.mariadb.enabled true }}
+              value: "mysql"
+              {{- else }}
+              value: {{ .Values.externalDatabase.type }}
+              {{- end }}
+            - name: DB_HOST
+              {{- if eq .Values.mariadb.enabled true }}
+              value: {{ include "limesurvey.mariadb.fullname" . }}
+              {{- else }}
+              value: {{ .Values.externalDatabase.host }}
+              {{- end }}
+            - name: DB_PORT
+              {{- if eq .Values.mariadb.enabled true }}
+              value: {{ coalesce .Values.mariadb.primary.service.ports.mysql .Values.mariadb.primary.service.port 3306 | quote }}
+              {{- else }}
+              value: {{ coalesce .Values.externalDatabase.port 3306 | quote }}
+              {{- end }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.databaseSecretName" . }}
+                  {{- if .Values.mariadb.enabled }}
+                  key: mariadb-password
+                  {{- else }}
+                  key: db-password
+                  {{- end }}
+            - name: DB_USERNAME
+              {{- if eq .Values.mariadb.enabled true }}
+              value: {{ .Values.mariadb.auth.username }}
+              {{- else }}
+              value: {{ .Values.externalDatabase.username }}
+              {{- end }}
+            - name: DB_NAME
+              {{- if eq .Values.mariadb.enabled true }}
+              value: {{ .Values.mariadb.auth.database }}
+              {{- else }}
+              value: {{ .Values.externalDatabase.database }}
+              {{- end }}
+            - name: DB_TABLE_PREFIX
+              value: {{ .Values.limesurvey.tablePrefix | quote }}
+            - name: DB_MYSQL_ENGINE
+              value: {{ .Values.limesurvey.mysqlEngine }}
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.secretName" . }}
+                  key: limesurvey-admin-password
+            - name: ADMIN_USER
+              value: {{ .Values.limesurvey.admin.user }}
+            - name: ADMIN_NAME
+              value: {{ .Values.limesurvey.admin.name }}
+            - name: ADMIN_EMAIL
+              value: {{ .Values.limesurvey.admin.email }}
+            - name: LISTEN_PORT
+              value: {{ .Values.limesurvey.listenPort | quote }}
+            {{- if .Values.limesurvey.baseUrl }}
+            - name: BASE_URL
+              value: {{ .Values.limesurvey.baseUrl }}
+            {{- end }}
+            {{- if .Values.limesurvey.publicUrl }}
+            - name: PUBLIC_URL
+              value: {{ .Values.limesurvey.publicUrl }}
+            {{- end }}
+            - name: URL_FORMAT
+              value: {{ .Values.limesurvey.urlFormat }}
+              {{- if eq .Values.limesurvey.tableSession true }}
+            - name: TABLE_SESSION
+              value: {{ .Values.limesurvey.tableSession }}
+              {{- end }}
+            {{- if .Values.limesurvey.showScriptName }}
+            - name: SHOW_SCRIPT_NAME
+              value: {{ .Values.limesurvey.showScriptName | quote }}
+            {{- end }}
+            {{- if (or .Values.limesurvey.encrypt.keypair .Values.limesurvey.existingSecret) }}
+            - name: ENCRYPT_KEYPAIR
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.secretName" . }}
+                  key: limesurvey-encrypt-keypair
+            {{- end }}
+            {{- if (or .Values.limesurvey.encrypt.publicKey .Values.limesurvey.existingSecret) }}
+            - name: ENCRYPT_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.secretName" . }}
+                  key: limesurvey-encrypt-publickey
+            {{- end }}
+            {{- if (or .Values.limesurvey.encrypt.secretKey .Values.limesurvey.existingSecret) }}
+            - name: ENCRYPT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.secretName" . }}
+                  key: limesurvey-encrypt-secretkey
+            {{- end }}
+            {{- if (or .Values.limesurvey.encrypt.nonce .Values.limesurvey.existingSecret) }}
+            - name: ENCRYPT_NONCE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.secretName" . }}
+                  key: limesurvey-encrypt-nonce
+            {{- end }}
+            {{- if (or .Values.limesurvey.encrypt.secretBoxKey .Values.limesurvey.existingSecret) }}
+            - name: ENCRYPT_SECRET_BOX_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "limesurvey.secretName" . }}
+                  key: limesurvey-encrypt-secretboxkey
+            {{- end }}
+            - name: DEBUG
+              value: "{{ .Values.limesurvey.debug }}"
+            - name: DEBUG_SQL
+              value: "{{ .Values.limesurvey.debugSql }}"
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: storage
+      {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "limesurvey.fullname" .) }}
+      {{- else }}
+          emptyDir: {}
+      {{- end -}}
+      {{- range .Values.extraVolumeMounts }}
+        - name: {{ .name }}
+          {{- if .existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .existingClaim }}
+          {{- else if .hostPath }}
+          hostPath:
+            path: {{ .hostPath }}
+          {{- else if .configMap }}
+          configMap:
+            name: {{ .configMap }}
+            {{- with .items }}
+            items:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- end }}
+      {{- range .Values.extraEmptyDirMounts }}
+        - name: {{ .name }}
+          emptyDir: {}
+      {{- end -}}

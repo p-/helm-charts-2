@@ -1,0 +1,191 @@
+# Default values for LimeSurvey.
+
+global:
+  imageRegistry: ""
+
+image:
+  registry: docker.io
+  repository: martialblog/limesurvey
+  # Specify a imagePullPolicy
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion
+  tag: null
+
+# Optionally specify an array of imagePullSecrets
+# Secrets must be manually created in the namespace
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  annotations: {}
+  name: ""
+
+## MariaDB chart configuration
+mariadb:
+  # Deploy a MariaDB server to satisfy the database requirements
+  enabled: false
+  # for all possible configuration values, see:
+  # https://github.com/bitnami/charts/blob/master/bitnami/mariadb/values.yaml
+  auth:
+    # MariaDB root password
+    rootPassword: ""
+    # MariaDB custom database
+    database: limesurvey
+    # MariaDB custom user name
+    username: limesurvey
+    # MariaDB custom user password
+    password: null
+
+## Use an externally provisioned database instance
+## Ignored when mariadb.enabled is set to true
+externalDatabase:
+  # Type of external database ("mysql" or "psql")
+  type: mysql
+  # External Database server host
+  host: mariadb.example.com
+  # External Database server port
+  port: 3306
+  # External Database username
+  username: limesurvey
+  # External Database user password
+  # (ignored when existingSecret is set)
+  password: null
+  # External Database database name
+  database: limesurvey
+  # Use an existing secret for retrieving the database password.
+  # The secret must contain the field "db-password".
+  existingSecret: null
+
+# Limesurvey Application configuration
+limesurvey:
+  # LimeSurvey initial Administrator Account
+  admin:
+    user: admin
+    password: null
+    name: Administrator
+    email: admin@example.com
+  # LimeSurvey permits the encryption of personal data
+  # These values will be created as secret
+  # https://manual.limesurvey.org/Data_encryption
+  # Not required for LimeSurvey 3
+  encrypt:
+    keypair: ""
+    publicKey: ""
+    secretKey: ""
+    nonce: ""
+    secretBoxKey: ""
+  existingSecret: null
+  listenPort: 8080
+  publicUrl: ""
+  baseUrl: ""
+  urlFormat: "path"
+  showScriptName: ""
+  # Database table prefix; set this to a single whitespace if you don't want a table prefix.
+  tablePrefix: "lime_"
+  # Enable table sessions (Storing sessions in the database)
+  tableSession: false
+  # LimeSurvey Debug level (0, 1, 2)
+  debug: 0
+  # LimeSurvey SQL Debug level (0, 1, 2)
+  debugSql: 0
+  # Value should be either MyISAM or InnoDB
+  mysqlEngine: MyISAM
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+## Used for LimeSurvey Uploads
+persistence:
+  # Enable persistence with PVC. If false, uses emptyDir instead.
+  enabled: true
+  storageClassName: null
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  annotations: {}
+  finalizers:
+    - kubernetes.io/pvc-protection
+  selectorLabels: {}
+  subPath: ""
+  existingClaim: null
+
+## This allows you to mount additional volumes
+## into the Limesurvey container
+extraVolumeMounts: []
+# - name: extra-volume-0
+#   mountPath: /mnt/volume0
+#   readOnly: true
+#   existingClaim: volume-claim
+# - name: extra-volume-1
+#   mountPath: /mnt/volume1
+#   readOnly: true
+#   hostPath: /usr/shared/
+# - name: extra-volume-configmap
+#   configMap: limesurvey
+#   items:
+#   - key: config.php
+#     path: application/config/config.php
+
+## This allows you to mount additional "emptyDirs"
+## into the Limesurvey container
+extraEmptyDirMounts: []
+# - name: extra-empty-dir
+#   mountPath: /var/lib/foobar
+
+## Number of LimeSurvey replicas to deploy
+## Multiple replicas may require table sessions to be enabled
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: limesurvey.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits: {}
+  requests:
+    memory: 512Mi
+    cpu: 300m
+
+## Deployment strategy type and parameters
+## Set it to `Recreate` if you use a PV that cannot be mounted on multiple pods
+updateStrategy:
+  type: RollingUpdate
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 11
+  targetCPUUtilizationPercentage: 80
+
+containerSecurityContext:
+  enabled: true
+  allowPrivilegeEscalation: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podAnnotations: {}
+
+## Specify privileges and access control settings
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+## 33 is the www-data user in Debian-based images
+podSecurityContext:
+  runAsUser: 33
+  runAsGroup: 33
+  fsGroup: 33
